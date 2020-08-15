@@ -123,6 +123,10 @@ export const ViewerResolver: IResolvers = {
 				const code = input ? input.code : null;
 				const token = crypto.randomBytes(16).toString('hex');
 
+				// if the code variable is passed in from the client then we know that we want to
+				// fetch the user details from google and if code var isn't passed then we know that
+				// user has logged in before and they have a cookie saved in the browser, so we'll log'em in
+				// via cookie.
 				const viewer: User | undefined = code
 					? await loginViaGoogle(code, token, db, res)
 					: await loginViaCookie(token, db, req, res);
