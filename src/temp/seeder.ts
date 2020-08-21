@@ -657,10 +657,10 @@ const users: User[] = [
 	{
 		_id: '5d378db94e84753160e08b55',
 		token: 'token_************',
-		name: 'James J.',
+		name: 'Mr. Test',
 		avatar:
 			'https://res.cloudinary.com/tiny-house/image/upload/w_1000,ar_1:1,c_fill,g_auto/v1560648533/mock/users/user-profile-1_mawp12.jpg',
-		contact: 'james@tinyhouse.com',
+		contact: 'test@tester.com',
 		walletId: 'acct_************',
 		income: 723796,
 		bookings: [],
@@ -668,6 +668,11 @@ const users: User[] = [
 			new ObjectId('5d378db94e84753160e08b31'),
 			new ObjectId('5d378db94e84753160e08b4b'),
 			new ObjectId('5d378db94e84753160e08b4c'),
+			new ObjectId('5d378db94e84753160e08b4a'),
+			new ObjectId('5d378db94e84753160e08b50'),
+			new ObjectId('5d378db94e84753160e08b51'),
+			new ObjectId('5d378db94e84753160e08b53'),
+			new ObjectId('5d378db94e84753160e08b54'),
 		],
 	},
 	{
@@ -688,11 +693,6 @@ const users: User[] = [
 			new ObjectId('5d378db94e84753160e08b3d'),
 			new ObjectId('5d378db94e84753160e08b41'),
 			new ObjectId('5d378db94e84753160e08b43'),
-			new ObjectId('5d378db94e84753160e08b4a'),
-			new ObjectId('5d378db94e84753160e08b50'),
-			new ObjectId('5d378db94e84753160e08b51'),
-			new ObjectId('5d378db94e84753160e08b53'),
-			new ObjectId('5d378db94e84753160e08b54'),
 		],
 	},
 	{

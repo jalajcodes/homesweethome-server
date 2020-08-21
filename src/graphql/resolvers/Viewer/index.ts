@@ -12,6 +12,10 @@ const cookieOptions = {
 	secure: process.env.NODE_ENV === 'development' ? false : true,
 };
 
+const cookieExpiry = process.env.COOKIE_EXPIRY
+	? +process.env.COOKIE_EXPIRY * 24 * 60 * 60 * 1000
+	: 30 * 24 * 60 * 60 * 1000;
+
 const loginViaGoogle = async (code: string, token: string, db: Database, res: Response): Promise<User | undefined> => {
 	const { user } = await Google.login(code);
 	if (!user) {
@@ -76,9 +80,7 @@ const loginViaGoogle = async (code: string, token: string, db: Database, res: Re
 	}
 
 	// Set the cookie
-	const cookieExpiry = process.env.COOKIE_EXPIRY
-		? +process.env.COOKIE_EXPIRY * 24 * 60 * 60 * 1000
-		: 30 * 24 * 60 * 60 * 1000;
+
 	res.cookie('viewer', userId, {
 		...cookieOptions,
 		maxAge: cookieExpiry,
@@ -115,7 +117,7 @@ export const ViewerResolver: IResolvers = {
 	},
 	Mutation: {
 		login: async (
-			root: undefined,
+			_root: undefined,
 			{ input }: LogInArgs,
 			{ db, res, req }: { db: Database; req: Request; res: Response }
 		): Promise<Viewer> => {
@@ -152,6 +154,38 @@ export const ViewerResolver: IResolvers = {
 				return { didRequest: true };
 			} catch (error) {
 				throw new Error(`Failed to log out: ${error}`);
+			}
+		},
+
+		loginAsGuest: async (
+			_root: undefined,
+			_args: undefined,
+			{ db, res }: { db: Database; res: Response }
+		): Promise<Viewer> => {
+			try {
+				const userId = '5d378db94e84753160e08b55';
+				const viewer = await db.users.findOne({
+					_id: userId,
+				});
+
+				if (!viewer) {
+					return { didRequest: true };
+				}
+
+				res.cookie('viewer', userId, {
+					...cookieOptions,
+					maxAge: cookieExpiry,
+				});
+
+				return {
+					_id: viewer._id,
+					token: viewer.token,
+					avatar: viewer.avatar,
+					walletId: viewer.walletId,
+					didRequest: true,
+				};
+			} catch (error) {
+				throw new Error(`Unable to login as guest: ${error}`);
 			}
 		},
 	},
