@@ -10,7 +10,7 @@ import { connectDatabase } from './database';
 const app = express();
 
 const mount = async (app: Application) => {
-	// Connect to db
+	// Connect to database
 	const db = await connectDatabase();
 
 	// Use Cookie Parser Middleware
@@ -21,7 +21,9 @@ const mount = async (app: Application) => {
 	// Use the middleware provided by apollol
 	server.applyMiddleware({ app, path: '/api' });
 
-	app.listen(process.env.PORT, () => console.log(`Server running on ${process.env.PORT}`));
+	app.listen(process.env.PORT, () =>
+		console.log(`Server running on ${'http://localhost:' + process.env.PORT + server.graphqlPath}`)
+	);
 };
 
 mount(app);
