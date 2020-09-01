@@ -73,6 +73,10 @@ export const typeDefs = gql`
 		code: String!
 	}
 
+	input StripeConnectInput {
+		code: String!
+	}
+
 	type Query {
 		authUrl: String!
 		user(id: ID!): User!
@@ -84,5 +88,7 @@ export const typeDefs = gql`
 		login(input: LogInInput): Viewer!
 		loginAsGuest: Viewer!
 		logout: Viewer!
+		stripeConnect(input: StripeConnectInput!): Viewer!
+		stripeDisconnect: Viewer!
 	}
 `;

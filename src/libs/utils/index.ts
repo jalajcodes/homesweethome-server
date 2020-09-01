@@ -16,13 +16,13 @@ export const authorize = async (req: Request, db: Database): Promise<User | null
 };
 
 ////////////////////////////////////////
-// Geocoder Setup
+// Node Geocoder Setup
 ////////////////////////////////////////
 
 const geocoderOptions: Options = {
 	provider: 'openstreetmap',
 	httpAdapter: 'https',
-	// apiKey: process.env.GEOCODER_KEY,
+	// apiKey: process.env.GEOCODER_KEY, // don't need it for openstreetmap api
 	formatter: null,
 	language: 'en',
 };
