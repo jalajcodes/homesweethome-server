@@ -75,6 +75,10 @@ exports.typeDefs = apollo_server_express_1.gql `
 		code: String!
 	}
 
+	input StripeConnectInput {
+		code: String!
+	}
+
 	type Query {
 		authUrl: String!
 		user(id: ID!): User!
@@ -86,5 +90,7 @@ exports.typeDefs = apollo_server_express_1.gql `
 		login(input: LogInInput): Viewer!
 		loginAsGuest: Viewer!
 		logout: Viewer!
+		stripeConnect(input: StripeConnectInput!): Viewer!
+		stripeDisconnect: Viewer!
 	}
 `;

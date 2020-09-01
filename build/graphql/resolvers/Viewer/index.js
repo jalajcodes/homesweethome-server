@@ -22,7 +22,7 @@ const cookieOptions = {
     secure: process.env.NODE_ENV === 'development' ? false : true,
 };
 const cookieExpiry = process.env.COOKIE_EXPIRY
-    ? +process.env.COOKIE_EXPIRY * 24 * 60 * 60 * 1000
+    ? parseInt(process.env.COOKIE_EXPIRY) * 24 * 60 * 60 * 1000
     : 30 * 24 * 60 * 60 * 1000;
 const loginViaGoogle = (code, token, db, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { user } = yield api_1.Google.login(code);

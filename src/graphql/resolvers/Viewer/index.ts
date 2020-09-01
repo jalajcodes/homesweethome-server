@@ -13,7 +13,7 @@ const cookieOptions = {
 };
 
 const cookieExpiry = process.env.COOKIE_EXPIRY
-	? +process.env.COOKIE_EXPIRY * 24 * 60 * 60 * 1000
+	? parseInt(process.env.COOKIE_EXPIRY) * 24 * 60 * 60 * 1000
 	: 30 * 24 * 60 * 60 * 1000;
 
 const loginViaGoogle = async (code: string, token: string, db: Database, res: Response): Promise<User | undefined> => {
@@ -61,9 +61,9 @@ const loginViaGoogle = async (code: string, token: string, db: Database, res: Re
 		{ returnOriginal: false }
 	);
 
-	let viewer = updateResult.value;
+	let viewer = updateResult.value; // (updateResult.value return the updated user details)
 
-	// But if user don't exist, create one. (updateResult.value return the updated user details)
+	// But if user don't exist, create one.
 	if (!viewer) {
 		const insertResult = await db.users.insertOne({
 			_id: userId,
@@ -76,7 +76,7 @@ const loginViaGoogle = async (code: string, token: string, db: Database, res: Re
 			listings: [],
 		});
 
-		viewer = insertResult.ops[0];
+		viewer = insertResult.ops[0]; //(insertResult.ops[0] returns user details)
 	}
 
 	// Set the cookie
@@ -163,7 +163,7 @@ export const ViewerResolver: IResolvers = {
 			{ db, res }: { db: Database; res: Response }
 		): Promise<Viewer> => {
 			try {
-				const userId = '5d378db94e84753160e08b55';
+				const userId = '5d378db94e84753160e08b55'; // test user id
 				const viewer = await db.users.findOne({
 					_id: userId,
 				});

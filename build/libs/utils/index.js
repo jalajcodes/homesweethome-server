@@ -25,12 +25,12 @@ exports.authorize = (req, db) => __awaiter(void 0, void 0, void 0, function* () 
     return viewer;
 });
 ////////////////////////////////////////
-// Geocoder Setup
+// Node Geocoder Setup
 ////////////////////////////////////////
 const geocoderOptions = {
     provider: 'openstreetmap',
     httpAdapter: 'https',
-    // apiKey: process.env.GEOCODER_KEY,
+    // apiKey: process.env.GEOCODER_KEY, // don't need it for openstreetmap api
     formatter: null,
     language: 'en',
 };
@@ -40,9 +40,9 @@ const parseAddress = (data) => {
     const admin = data && data.state ? data.state : null;
     const city = data && data.city ? data.city : null;
     // Improve the seeder or use another api
-    // api send the full name of the country,
+    // coz api send the full name of the country,
     // but the seeder data doesn't contain full name,
-    // this is a lame check for that, just to make it work!!!!!!
+    // !!!!!!this is a lame check for that, just to make it work!!!!!!
     if (country === 'United States of America') {
         country = 'United States';
     }
