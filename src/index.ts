@@ -18,7 +18,7 @@ const mount = async (app: Application) => {
 
 	// Instantiate apollo server instance
 	const server = new ApolloServer({ typeDefs, resolvers, context: ({ req, res }) => ({ db, req, res }) });
-	// Use the middleware provided by apollol
+	// Use the middleware provided by apollo
 	server.applyMiddleware({ app, path: '/api' });
 
 	app.listen(process.env.PORT, () =>
