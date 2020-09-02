@@ -27,7 +27,7 @@ const mount = (app) => __awaiter(void 0, void 0, void 0, function* () {
     app.use(cookie_parser_1.default(process.env.COOKIE_SECRET));
     // Instantiate apollo server instance
     const server = new apollo_server_express_1.ApolloServer({ typeDefs: index_1.typeDefs, resolvers: index_1.resolvers, context: ({ req, res }) => ({ db, req, res }) });
-    // Use the middleware provided by apollol
+    // Use the middleware provided by apollo
     server.applyMiddleware({ app, path: '/api' });
     app.listen(process.env.PORT, () => console.log(`Server running on ${'http://localhost:' + process.env.PORT + server.graphqlPath}`));
 });

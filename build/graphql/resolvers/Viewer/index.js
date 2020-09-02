@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.ViewerResolver = void 0;
 const crypto_1 = __importDefault(require("crypto"));
 const api_1 = require("../../../libs/api");
+const utils_1 = require("../../../libs/utils");
 const cookieOptions = {
     httpOnly: true,
     sameSite: true,
@@ -29,7 +30,7 @@ const loginViaGoogle = (code, token, db, res) => __awaiter(void 0, void 0, void 
     if (!user) {
         throw new Error('Google Login Error');
     }
-    // Names/Photos/Emails List
+    // Names/Photos/Emails List from google
     const userNamesList = user.names && user.names.length ? user.names : null;
     const userPhotosList = user.photos && user.photos.length ? user.photos : null;
     const userEmailsList = user.emailAddresses && user.emailAddresses.length ? user.emailAddresses : null;
@@ -56,8 +57,8 @@ const loginViaGoogle = (code, token, db, res) => __awaiter(void 0, void 0, void 
             token,
         },
     }, { returnOriginal: false });
-    let viewer = updateResult.value;
-    // But if user don't exist, create one. (updateResult.value return the updated user details)
+    let viewer = updateResult.value; // (updateResult.value return the updated user details)
+    // But if user don't exist, create one.
     if (!viewer) {
         const insertResult = yield db.users.insertOne({
             _id: userId,
@@ -69,7 +70,7 @@ const loginViaGoogle = (code, token, db, res) => __awaiter(void 0, void 0, void 
             bookings: [],
             listings: [],
         });
-        viewer = insertResult.ops[0];
+        viewer = insertResult.ops[0]; //(insertResult.ops[0] returns user details)
     }
     // Set the cookie
     res.cookie('viewer', userId, Object.assign(Object.assign({}, cookieOptions), { maxAge: cookieExpiry }));
@@ -132,7 +133,7 @@ exports.ViewerResolver = {
         },
         loginAsGuest: (_root, _args, { db, res }) => __awaiter(void 0, void 0, void 0, function* () {
             try {
-                const userId = '5d378db94e84753160e08b55';
+                const userId = '5d378db94e84753160e08b55'; // test user id
                 const viewer = yield db.users.findOne({
                     _id: userId,
                 });
@@ -150,6 +151,63 @@ exports.ViewerResolver = {
             }
             catch (error) {
                 throw new Error(`Unable to login as guest: ${error}`);
+            }
+        }),
+        stripeConnect: (_root, { input }, { db, req }) => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                const { code } = input;
+                // get the logged in user info
+                let viewer = yield utils_1.authorize(req, db);
+                if (!viewer) {
+                    throw new Error(`Viewer can't be found`);
+                }
+                // connect to stripe
+                const stripeInfo = yield api_1.Stripe.connect(code);
+                if (!stripeInfo) {
+                    throw new Error(`Stripe grant error`);
+                }
+                // get walletId from the response
+                const walletId = stripeInfo.stripe_user_id;
+                // update users walletId
+                const updateUser = yield db.users.findOneAndUpdate({ _id: viewer._id }, { $set: { walletId } }, { returnOriginal: false });
+                if (!updateUser.value) {
+                    throw new Error(`Unable to update the viewer`);
+                }
+                // set the viewer variable to updated user value
+                viewer = updateUser.value;
+                return {
+                    id: viewer._id,
+                    token: viewer.token,
+                    avatar: viewer.avatar,
+                    walletId: viewer.walletId,
+                    didRequest: true,
+                };
+            }
+            catch (error) {
+                throw new Error(`Unable to connect to stripe: ${error}`);
+            }
+        }),
+        stripeDisconnect: (_root, _args, { db, req }) => __awaiter(void 0, void 0, void 0, function* () {
+            try {
+                let viewer = yield utils_1.authorize(req, db);
+                if (!viewer) {
+                    throw new Error('viewer cannot be found');
+                }
+                const updateRes = yield db.users.findOneAndUpdate({ _id: viewer._id }, { $set: { walletId: undefined } }, { returnOriginal: false });
+                if (!updateRes.value) {
+                    throw new Error('viewer could not be updated');
+                }
+                viewer = updateRes.value;
+                return {
+                    _id: viewer._id,
+                    token: viewer.token,
+                    avatar: viewer.avatar,
+                    walletId: viewer.walletId,
+                    didRequest: true,
+                };
+            }
+            catch (error) {
+                throw new Error(`Failed to disconnect with Stripe: ${error}`);
             }
         }),
     },
