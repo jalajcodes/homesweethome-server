@@ -55,7 +55,7 @@ exports.ListingResolvers = {
                     const region = `${city ? city + ',' : ''} ${admin ? admin + ',' : ''} ${country}`;
                     data.region = region.trim();
                 }
-                // Check for numOfGuests filtere
+                // Check for numOfGuests filter
                 if (filter && filter === types_1.ListingsFilter.NUM_OF_GUESTS_1) {
                     query.numOfGuests = 1;
                 }

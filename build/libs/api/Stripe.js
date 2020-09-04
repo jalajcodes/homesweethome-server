@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.Stripe = void 0;
 const stripe_1 = __importDefault(require("stripe"));
 const client = new stripe_1.default(`${process.env.S_SECRET_KEY}`, { apiVersion: '2020-08-27' });
+// this
 exports.Stripe = {
     connect: (code) => __awaiter(void 0, void 0, void 0, function* () {
         const response = yield client.oauth.token({

@@ -65,7 +65,7 @@ export const ListingResolvers: IResolvers = {
 					data.region = region.trim();
 				}
 
-				// Check for numOfGuests filtere
+				// Check for numOfGuests filter
 				if (filter && filter === ListingsFilter.NUM_OF_GUESTS_1) {
 					query.numOfGuests = 1;
 				}
