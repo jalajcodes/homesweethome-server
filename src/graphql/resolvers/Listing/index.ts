@@ -1,5 +1,5 @@
 import { IResolvers } from 'apollo-server-express';
-import { Listing, Database, User } from '../../../libs/types';
+import { Listing, Database, User, ListingType } from '../../../libs/types';
 import {
 	ListingArgs,
 	ListingsArgs,
@@ -8,10 +8,29 @@ import {
 	ListingsData,
 	ListingsFilter,
 	ListingsQuery,
+	HostListingArgs,
+	HostListingInput,
 } from './types';
 import { ObjectId } from 'mongodb';
 import { authorize, geocode } from '../../../libs/utils';
 import { Request } from 'express';
+
+const verifyHostListingInputs = (input: HostListingInput) => {
+	const { title, description, price, type } = input;
+
+	if (title.length > 100) {
+		throw new Error('listing title must be under 100 characters');
+	}
+	if (description.length > 5000) {
+		throw new Error('listing description must be under 5000 characters');
+	}
+	if (type !== ListingType.Apartment && type !== ListingType.House) {
+		throw new Error('listing type must be either an apartment or house');
+	}
+	if (price < 0) {
+		throw new Error('price must be greater than 0');
+	}
+};
 
 export const ListingResolvers: IResolvers = {
 	Query: {
@@ -100,6 +119,47 @@ export const ListingResolvers: IResolvers = {
 			} catch (error) {
 				throw new Error(`Failed to query user listings: ${error}`);
 			}
+		},
+	},
+	Mutation: {
+		hostListing: async (
+			_root: undefined,
+			{ input }: HostListingArgs,
+			{ db, req }: { db: Database; req: Request }
+		): Promise<Listing> => {
+			// verify the inputs
+			verifyHostListingInputs(input);
+
+			// make sure the user is logged in
+			const viewer = await authorize(req, db);
+			if (!viewer) {
+				throw new Error(`You must be logged in to create a new Listing.`);
+			}
+
+			// get the country admin and city from the geocoder
+			const { admin, city, country } = await geocode(input.address);
+			if (!country || !admin || !city) {
+				throw new Error(`Invalid Address Input`);
+			}
+			// create the listing
+			const createListingResult = await db.listings.insertOne({
+				_id: new ObjectId(),
+				...input,
+				bookings: [],
+				bookingsIndex: {},
+				country,
+				admin,
+				city,
+				host: viewer._id,
+			});
+
+			// add the created listing id into the listing field of respected user
+			const createdListing = createListingResult.ops[0];
+			const createdlistingId = createdListing._id;
+			await db.users.updateOne({ _id: viewer._id }, { $push: { listings: createdlistingId } });
+
+			// return the listing result
+			return createdListing;
 		},
 	},
 
