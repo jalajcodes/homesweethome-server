@@ -30,7 +30,7 @@ exports.authorize = (req, db) => __awaiter(void 0, void 0, void 0, function* () 
 const geocoderOptions = {
     provider: 'openstreetmap',
     httpAdapter: 'https',
-    // apiKey: process.env.GEOCODER_KEY, // don't need it for openstreetmap api
+    // apiKey: process.env.GEOCODER_KEY, // not needed for openstreetmap api
     formatter: null,
     language: 'en',
 };
@@ -51,7 +51,7 @@ const parseAddress = (data) => {
 exports.geocode = (address) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const res = yield geocoder.geocode(address);
-        // console.log('geocode -> res', res);
+        console.log('geocode -> res', res);
         return parseAddress(res[0]);
     }
     catch (error) {

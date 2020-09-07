@@ -79,6 +79,16 @@ exports.typeDefs = apollo_server_express_1.gql `
 		code: String!
 	}
 
+	input HostListingInput {
+		title: String!
+		description: String!
+		image: String!
+		type: ListingType!
+		address: String!
+		price: Int!
+		numOfGuests: Int!
+	}
+
 	type Query {
 		authUrl: String!
 		user(id: ID!): User!
@@ -92,5 +102,6 @@ exports.typeDefs = apollo_server_express_1.gql `
 		logout: Viewer!
 		stripeConnect(input: StripeConnectInput!): Viewer!
 		stripeDisconnect: Viewer!
+		hostListing(input: HostListingInput!): Listing!
 	}
 `;

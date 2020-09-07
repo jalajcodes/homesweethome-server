@@ -1,4 +1,4 @@
-import { Booking, Listing } from '../../../libs/types';
+import { Booking, Listing, ListingType } from '../../../libs/types';
 
 export interface ListingArgs {
 	id: string;
@@ -12,6 +12,20 @@ export interface ListingBookingsArgs {
 export interface ListingBookingsData {
 	total: number;
 	result: Booking[];
+}
+
+export interface HostListingInput {
+	title: string;
+	description: string;
+	image: string;
+	type: ListingType;
+	address: string;
+	price: number;
+	numOfGuests: number;
+}
+
+export interface HostListingArgs {
+	input: HostListingInput;
 }
 
 export enum ListingsFilter {
