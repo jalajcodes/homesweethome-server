@@ -51,7 +51,7 @@ const parseAddress = (data) => {
 exports.geocode = (address) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const res = yield geocoder.geocode(address);
-        console.log('geocode -> res', res);
+        // console.log('geocode -> res', res);
         return parseAddress(res[0]);
     }
     catch (error) {

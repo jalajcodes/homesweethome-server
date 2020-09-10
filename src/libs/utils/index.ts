@@ -48,7 +48,7 @@ const parseAddress = (data: Entry) => {
 export const geocode = async (address: string) => {
 	try {
 		const res = await geocoder.geocode(address);
-		console.log('geocode -> res', res);
+		// console.log('geocode -> res', res);
 		return parseAddress(res[0]);
 	} catch (error) {
 		throw new Error(`Failed to geocode: ${error}`);
