@@ -135,9 +135,13 @@ export const ListingResolvers: IResolvers = {
 			if (!viewer) {
 				throw new Error(`You must be logged in to create a new Listing.`);
 			}
-
+			// remove the street info from the recived address (because api doesn't work with streets)
+			const addrArray = input.address.split(',');
+			addrArray.shift();
+			const tempAdr = addrArray.join(',');
 			// get the country admin and city from the geocoder
-			const { admin, city, country } = await geocode(input.address);
+			const { admin, city, country } = await geocode(tempAdr);
+
 			if (!country || !admin || !city) {
 				throw new Error(`Invalid Address Input`);
 			}
