@@ -14,7 +14,7 @@ const mount = async (app: Application) => {
 	// Connect to database
 	const db = await connectDatabase();
 
-	app.use(bodyParser.json({ limit: '2mb' }));
+	app.use(express.json({ limit: '2mb' }));
 	app.use(cookieParser(process.env.COOKIE_SECRET));
 
 	// Instantiate apollo server instance
