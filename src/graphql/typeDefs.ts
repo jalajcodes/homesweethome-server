@@ -78,6 +78,7 @@ export const typeDefs = gql`
 	}
 
 	input HostListingInput {
+		id: String
 		title: String!
 		description: String!
 		image: String!
@@ -85,6 +86,17 @@ export const typeDefs = gql`
 		address: String!
 		price: Int!
 		numOfGuests: Int!
+	}
+
+	input DeleteListingInput {
+		id: String!
+	}
+
+	input CreateBookingInput {
+		id: ID!
+		source: String!
+		checkIn: String!
+		checkOut: String!
 	}
 
 	type Query {
@@ -101,5 +113,7 @@ export const typeDefs = gql`
 		stripeConnect(input: StripeConnectInput!): Viewer!
 		stripeDisconnect: Viewer!
 		hostListing(input: HostListingInput!): Listing!
+		deleteListing(input: DeleteListingInput!): Listing!
+		createBooking(input: CreateBookingInput!): Booking!
 	}
 `;

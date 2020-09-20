@@ -10,6 +10,7 @@ import {
 	ListingsQuery,
 	HostListingArgs,
 	HostListingInput,
+	DeleteListingArgs,
 } from './types';
 import { ObjectId } from 'mongodb';
 import { authorize, geocode } from '../../../libs/utils';
@@ -134,7 +135,7 @@ export const ListingResolvers: IResolvers = {
 			// make sure the user is logged in
 			const viewer = await authorize(req, db);
 			if (!viewer) {
-				throw new Error(`You must be logged in to create a new Listing.`);
+				throw new Error(`You must be logged in to create or edit a Listing.`);
 			}
 			// remove the street info from the recived address (because api doesn't work with streets)
 			const addrArray = input.address.split(',');
@@ -144,31 +145,77 @@ export const ListingResolvers: IResolvers = {
 			const { admin, city, country } = await geocode(tempAdr);
 
 			if (!country || !admin || !city) {
-				throw new Error(`Invalid Address Input`);
+				throw new Error(`Invalid Address Input Provided.`);
 			}
 
-			const imageUrl = await Cloudinary.upload(input.image);
+			let imageUrl = input.image;
+			// only upload if the image is updated ( means when the image is in base64 format)
+			if (input.image.split(':')[0] === 'data') {
+				imageUrl = await Cloudinary.upload(input.image);
+			}
 
-			// create the listing
-			const createListingResult = await db.listings.insertOne({
-				_id: new ObjectId(),
-				...input,
-				image: imageUrl,
-				bookings: [],
-				bookingsIndex: {},
-				country,
-				admin,
-				city,
-				host: viewer._id,
-			});
+			// update data if listing already exists
+			const updateResult = await db.listings.findOneAndUpdate(
+				{ _id: new ObjectId(input.id) },
+				{
+					$set: {
+						_id: new ObjectId(input.id),
+						...input,
+						image: imageUrl,
+						country,
+						admin,
+						city,
+					},
+				},
+				{ returnOriginal: false }
+			);
+
+			let listing = updateResult.value;
+
+			// if listing doesn't exist already, create the listing
+			if (!listing) {
+				const createListingResult = await db.listings.insertOne({
+					_id: new ObjectId(),
+					...input,
+					image: imageUrl,
+					bookings: [],
+					bookingsIndex: {},
+					country,
+					admin,
+					city,
+					host: viewer._id,
+				});
+
+				listing = createListingResult.ops[0];
+			}
 
 			// add the created listing id into the listing field of respected user
-			const createdListing = createListingResult.ops[0];
-			const createdlistingId = createdListing._id;
+			const createdlistingId = listing._id;
 			await db.users.updateOne({ _id: viewer._id }, { $push: { listings: createdlistingId } });
 
 			// return the listing result
-			return createdListing;
+			return listing;
+		},
+
+		deleteListing: async (
+			_root: undefined,
+			{ input }: DeleteListingArgs,
+			{ db, req }: { db: Database; req: Request }
+		): Promise<Listing> => {
+			const viewer = await authorize(req, db);
+			if (!viewer) {
+				throw new Error(`You must be logged in to delete a Listing.`);
+			}
+
+			const deleteListingResult = await db.listings.findOneAndDelete({
+				_id: new ObjectId(input.id),
+			});
+
+			if (!deleteListingResult.value) {
+				throw new Error('No Listing found to be deleted');
+			}
+
+			return deleteListingResult.value;
 		},
 	},
 

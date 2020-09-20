@@ -15,6 +15,7 @@ export interface ListingBookingsData {
 }
 
 export interface HostListingInput {
+	id?: string;
 	title: string;
 	description: string;
 	image: string;
@@ -26,6 +27,14 @@ export interface HostListingInput {
 
 export interface HostListingArgs {
 	input: HostListingInput;
+}
+
+export interface DeleteListingInput {
+	id: string;
+}
+
+export interface DeleteListingArgs {
+	input: DeleteListingInput;
 }
 
 export enum ListingsFilter {

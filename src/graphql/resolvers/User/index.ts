@@ -6,11 +6,7 @@ import { UserArgs, UserBookingsArgs, UserBookingsData, UserListingsArgs, UserLis
 
 export const UserResolvers: IResolvers = {
 	Query: {
-		user: async (
-			_root: undefined,
-			{ id }: UserArgs,
-			{ db, req }: { db: Database; req: Request }
-		): Promise<User> => {
+		user: async (_root: undefined, { id }: UserArgs, { db, req }: { db: Database; req: Request }): Promise<User> => {
 			try {
 				const user = await db.users.findOne({ _id: id });
 

@@ -3,13 +3,11 @@ dotenv.config();
 
 import express, { Application } from 'express';
 import cookieParser from 'cookie-parser';
-import bodyParser from 'body-parser';
 import { ApolloServer } from 'apollo-server-express';
 import { typeDefs, resolvers } from './graphql/index';
 import { connectDatabase } from './database';
 
 const app = express();
-
 const mount = async (app: Application) => {
 	// Connect to database
 	const db = await connectDatabase();
