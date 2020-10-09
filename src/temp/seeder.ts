@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-dotenv.config();
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 import { connectDatabase } from '../database';
 import { Listing, User, ListingType } from '../libs/types';
@@ -11,8 +11,7 @@ const listings: Listing[] = [
 		title: 'Clean and fully furnished apartment. 5 min away from CN Tower',
 		description:
 			'2 bed, 2 bathroom cozy apartment in the heart of downtown Toronto and only 5 min away from the CN Tower, Scotiabank Arena, and Rogers Center.',
-		image:
-			'https://res.cloudinary.com/tiny-house/image/upload/v1560641352/mock/Toronto/toronto-listing-1_exv0tf.jpg',
+		image: 'https://res.cloudinary.com/tiny-house/image/upload/v1560641352/mock/Toronto/toronto-listing-1_exv0tf.jpg',
 		host: '5d378db94e84753160e08b57',
 		type: ListingType.Apartment,
 		address: '3210 Scotchmere Dr W, Toronto, ON, CA',
@@ -27,10 +26,8 @@ const listings: Listing[] = [
 	{
 		_id: new ObjectId('5d378db94e84753160e08b31'),
 		title: 'Cozy, clean, and affordable studio in midtown',
-		description:
-			'Cozy, clean, and affordable studio located around midtown. Perfect for a solo traveller on a budget.',
-		image:
-			'https://res.cloudinary.com/tiny-house/image/upload/v1560641351/mock/Toronto/toronto-listing-2_aeg1rw.jpg',
+		description: 'Cozy, clean, and affordable studio located around midtown. Perfect for a solo traveller on a budget.',
+		image: 'https://res.cloudinary.com/tiny-house/image/upload/v1560641351/mock/Toronto/toronto-listing-2_aeg1rw.jpg',
 		host: '5d378db94e84753160e08b55',
 		type: ListingType.Apartment,
 		address: '7009 Strawberry Street, Toronto, ON, CA',
@@ -47,8 +44,7 @@ const listings: Listing[] = [
 		title: 'Bright comfortable room within a 4 bedroom duplex',
 		description:
 			'Bright comfortable room within a 4 bedroom duplex. 10 min drive from local airport. Relax, re-charge your batteries, and enjoy the suburbs of the Greater Toronto Area in this comfortable setting.',
-		image:
-			'https://res.cloudinary.com/tiny-house/image/upload/v1560641352/mock/Toronto/toronto-listing-3_eyftou.jpg',
+		image: 'https://res.cloudinary.com/tiny-house/image/upload/v1560641352/mock/Toronto/toronto-listing-3_eyftou.jpg',
 		host: '5d378db94e84753160e08b57',
 		type: ListingType.House,
 		address: '8110 Rockaway Ave, Toronto, ON, CA',
@@ -65,8 +61,7 @@ const listings: Listing[] = [
 		title: 'Luxury condo suite located in the heart of downtown Toronto',
 		description:
 			'Luxury condo suite located in the heart of the city with building pool/gym/sauna available 24/7. Buses, subway, and all other amenities are available close by. Booking comes with 1 available parking spot in building underground.',
-		image:
-			'https://res.cloudinary.com/tiny-house/image/upload/v1560641352/mock/Toronto/toronto-listing-4_ei1ngz.jpg',
+		image: 'https://res.cloudinary.com/tiny-house/image/upload/v1560641352/mock/Toronto/toronto-listing-4_ei1ngz.jpg',
 		host: '5d378db94e84753160e08b59',
 		type: ListingType.Apartment,
 		address: '9531 Prince Road, Toronto, ON, CA',
@@ -83,8 +78,7 @@ const listings: Listing[] = [
 		title: 'Cozy 2 bedroom house located within the suburbs',
 		description:
 			'Cozy 2 bedroom house, located roughly 1 hour from the downtown hub. Close to all transporation systems such as the local bus terminal and subway.',
-		image:
-			'https://res.cloudinary.com/tiny-house/image/upload/v1560641350/mock/Toronto/toronto-listing-5_vbmepz.jpg',
+		image: 'https://res.cloudinary.com/tiny-house/image/upload/v1560641350/mock/Toronto/toronto-listing-5_vbmepz.jpg',
 		host: '5d378db94e84753160e08b57',
 		type: ListingType.House,
 		address: '43 Tallwood Drive, Toronto, ON, CA',
@@ -101,8 +95,7 @@ const listings: Listing[] = [
 		title: 'Recently renovated and modern townhouse',
 		description:
 			'Recently renovated and furnished townhouse. 3 beds, 2 baths, and parking available at all times. Townhouse located within the complex of a vibrant community. Booked often, so be sure to book as soon as possible!',
-		image:
-			'https://res.cloudinary.com/tiny-house/image/upload/v1560641350/mock/Toronto/toronto-listing-6_oiqiod.jpg',
+		image: 'https://res.cloudinary.com/tiny-house/image/upload/v1560641350/mock/Toronto/toronto-listing-6_oiqiod.jpg',
 		host: '5d378db94e84753160e08b57',
 		type: ListingType.House,
 		address: '12 Morris Ave, Toronto, ON, CA',
@@ -119,8 +112,7 @@ const listings: Listing[] = [
 		title: 'Picturesque 2 Story House - great location',
 		description:
 			'Beautiful and picturesque 2 story house located only minutes away from the center of Midtown Toronto. Street level parking available at all times. With four beds and three baths, house accomodates up to 6 guests comfortably.',
-		image:
-			'https://res.cloudinary.com/tiny-house/image/upload/v1560641352/mock/Toronto/toronto-listing-7_p3a5ms.jpg',
+		image: 'https://res.cloudinary.com/tiny-house/image/upload/v1560641352/mock/Toronto/toronto-listing-7_p3a5ms.jpg',
 		host: '5d378db94e84753160e08b57',
 		type: ListingType.House,
 		address: '12 Morris Ave, Toronto, ON, CA',
@@ -137,8 +129,7 @@ const listings: Listing[] = [
 		title: 'Chic downtown condo',
 		description:
 			'Explore downtown Toronto by staying at this beautiful chic 1 bedroom condo. Access to a lap pool, gym, and sauna at all times.',
-		image:
-			'https://res.cloudinary.com/tiny-house/image/upload/v1560641352/mock/Toronto/toronto-listing-8_awkmrj.jpg',
+		image: 'https://res.cloudinary.com/tiny-house/image/upload/v1560641352/mock/Toronto/toronto-listing-8_awkmrj.jpg',
 		host: '5d378db94e84753160e08b56',
 		type: ListingType.Apartment,
 		address: '20 Overlook St, Toronto, ON, CA',

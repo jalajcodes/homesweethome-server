@@ -1,5 +1,5 @@
-import dotenv from 'dotenv';
-dotenv.config();
+// import dotenv from 'dotenv';
+// dotenv.config();
 
 import { Database, User } from '../types';
 import { Request } from 'express';
