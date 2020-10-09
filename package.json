@@ -37,7 +37,7 @@
 	"scripts": {
 		"watch": "tsc -w",
 		"dev": "nodemon build/index.js",
-		"start": "nodemon src/index.ts",
+		"start": "node build/index.js",
 		"build": "tsc -p ./",
 		"seed": "ts-node src/temp/seeder.ts",
 		"clear": "ts-node src/temp/clear.ts"

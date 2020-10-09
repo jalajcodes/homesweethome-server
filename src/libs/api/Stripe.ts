@@ -16,12 +16,13 @@ export const Stripe = {
 		const res = await client.charges.create(
 			{
 				amount,
-				currency: 'usd',
+				currency: 'inr',
 				source,
 				application_fee_amount: Math.floor(amount * 0.05),
+				description: 'HomeSweetHome Ltd.',
 			},
 			{
-				stripeAccount,
+				stripeAccount: stripeAccount,
 			}
 		);
 
