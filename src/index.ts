@@ -13,19 +13,29 @@ const mount = async (app: Application) => {
 	// Connect to database
 	const db = await connectDatabase();
 
-	const corsOptions: CorsOptions = {
-		origin: 'https://homesweethomee.netlify.app',
-		credentials: true,
-	};
+	// const corsOptions: CorsOptions = {
+	// 	origin: 'https://homesweethomee.netlify.app',
+	// 	credentials: true,
+	// };
 
-	app.use(cors(corsOptions));
-	app.use(express.json({ limit: '2mb' }));
+	// app.use(cors(corsOptions));
+	// app.use(express.json({ limit: '2mb' }));
 	app.use(cookieParser(process.env.COOKIE_SECRET));
 
 	// Instantiate apollo server instance
 	const server = new ApolloServer({ typeDefs, resolvers, context: ({ req, res }) => ({ db, req, res }) });
 	// Use the middleware provided by apollo
-	server.applyMiddleware({ app, path: '/api' });
+	server.applyMiddleware({
+		app,
+		path: '/api',
+		cors: {
+			credentials: true,
+			origin: 'https://homesweethomee.netlify.app',
+		},
+		bodyParserConfig: {
+			limit: '2mb',
+		},
+	});
 
 	app.listen(process.env.PORT, () =>
 		console.log(`Server running on ${'http://localhost:' + process.env.PORT + server.graphqlPath}`)
