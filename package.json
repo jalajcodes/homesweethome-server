@@ -3,6 +3,9 @@
 	"version": "0.1.0",
 	"description": "Listing app to play with typescript and graphql",
 	"author": "Jalaj",
+	"engines": {
+		"node": "14.6.0"
+	},
 	"license": "MIT",
 	"dependencies": {
 		"apollo-server-express": "^2.16.0",
