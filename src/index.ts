@@ -2,6 +2,7 @@
 // dotenv.config();
 
 import express, { Application } from 'express';
+import cors, { CorsOptions } from 'cors';
 import cookieParser from 'cookie-parser';
 import { ApolloServer } from 'apollo-server-express';
 import { typeDefs, resolvers } from './graphql/index';
@@ -12,6 +13,12 @@ const mount = async (app: Application) => {
 	// Connect to database
 	const db = await connectDatabase();
 
+	const corsOptions: CorsOptions = {
+		origin: 'https://homesweethomee.netlify.app',
+		credentials: true,
+	};
+
+	app.use(cors(corsOptions));
 	app.use(express.json({ limit: '2mb' }));
 	app.use(cookieParser(process.env.COOKIE_SECRET));
 

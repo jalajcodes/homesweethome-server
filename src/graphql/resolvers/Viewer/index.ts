@@ -8,7 +8,7 @@ import { LogInArgs, StripeConnectArgs } from './types';
 import { Response, Request } from 'express';
 
 const cookieOptions = {
-	// httpOnly: true,
+	httpOnly: true,
 	signed: true,
 	sameSite: 'none' as const,
 	secure: process.env.NODE_ENV === 'development' ? false : true,
