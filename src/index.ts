@@ -14,7 +14,7 @@ const mount = async (app: Application) => {
 	const db = await connectDatabase();
 
 	const corsOptions: CorsOptions = {
-		origin: 'https://homesweethomee.netlify.app',
+		// origin: 'homesweethomee.netlify.app',
 		credentials: true,
 	};
 
