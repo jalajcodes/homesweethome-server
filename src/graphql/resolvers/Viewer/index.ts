@@ -9,8 +9,8 @@ import { Response, Request } from 'express';
 
 const cookieOptions = {
 	httpOnly: true,
-	sameSite: none,
 	signed: true,
+	sameSite: 'none' as const,
 	secure: process.env.NODE_ENV === 'development' ? false : true,
 };
 
