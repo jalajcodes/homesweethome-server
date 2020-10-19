@@ -2,7 +2,6 @@
 // dotenv.config();
 
 import express, { Application } from 'express';
-import cors, { CorsOptions } from 'cors';
 import cookieParser from 'cookie-parser';
 import { ApolloServer } from 'apollo-server-express';
 import { typeDefs, resolvers } from './graphql/index';

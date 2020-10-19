@@ -12,6 +12,7 @@ const cookieOptions = {
 	signed: true,
 	sameSite: 'none' as const,
 	secure: process.env.NODE_ENV === 'development' ? false : true,
+	domain: 'homesweethomee.netlify.app',
 };
 
 const cookieExpiry = process.env.COOKIE_EXPIRY
