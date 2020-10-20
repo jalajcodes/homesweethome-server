@@ -10,10 +10,10 @@ import { Response, Request } from 'express';
 const cookieOptions = {
 	httpOnly: true,
 	signed: true,
-	sameSite: 'none' as const,
+	sameSite: 'none',
 	secure: process.env.NODE_ENV === 'development' ? false : true,
 	domain: 'netlify.app',
-};
+} as const;
 
 const cookieExpiry = process.env.COOKIE_EXPIRY
 	? parseInt(process.env.COOKIE_EXPIRY) * 24 * 60 * 60 * 1000
@@ -83,7 +83,6 @@ const loginViaGoogle = async (code: string, token: string, db: Database, res: Re
 	}
 
 	// Set the cookie
-
 	res.cookie('viewer', userId, {
 		...cookieOptions,
 		maxAge: cookieExpiry,
