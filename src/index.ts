@@ -22,7 +22,7 @@ const mount = async (app: Application) => {
 		path: '/api',
 		cors: {
 			credentials: true,
-			origin: 'https://homesweethomee.netlify.app',
+			origin: process.env.NODE_ENV === 'development' ? '' : 'https://homesweethomee.netlify.app',
 		},
 		bodyParserConfig: {
 			limit: '2mb',
@@ -30,7 +30,9 @@ const mount = async (app: Application) => {
 	});
 
 	app.listen(process.env.PORT, () =>
-		console.log(`Server running on ${'http://localhost:' + process.env.PORT + server.graphqlPath}`)
+		console.log(
+			`Server running in ${process.env.NODE_ENV} on ${'http://localhost:' + process.env.PORT + server.graphqlPath}`
+		)
 	);
 };
 

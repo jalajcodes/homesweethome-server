@@ -10,9 +10,8 @@ import { Response, Request } from 'express';
 const cookieOptions = {
 	httpOnly: true,
 	signed: true,
-	sameSite: 'none',
+	sameSite: process.env.NODE_ENV === 'development' ? true : 'none',
 	secure: process.env.NODE_ENV === 'development' ? false : true,
-	// domain: 'netlify.app',
 } as const;
 
 const cookieExpiry = process.env.COOKIE_EXPIRY
