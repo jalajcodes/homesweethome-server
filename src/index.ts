@@ -15,7 +15,14 @@ const mount = async (app: Application) => {
 	app.use(cookieParser(process.env.COOKIE_SECRET));
 
 	// Instantiate apollo server instance
-	const server = new ApolloServer({ typeDefs, resolvers, context: ({ req, res }) => ({ db, req, res }) });
+	const server = new ApolloServer({
+		typeDefs,
+		resolvers,
+		context: ({ req, res }) => ({ db, req, res }),
+		playground: true, // these last two options enables graphiql in production
+		introspection: true,
+	});
+
 	// Use the middleware provided by apollo
 	server.applyMiddleware({
 		app,
@@ -31,7 +38,9 @@ const mount = async (app: Application) => {
 
 	app.listen(process.env.PORT, () =>
 		console.log(
-			`Server running in ${process.env.NODE_ENV} on ${'http://localhost:' + process.env.PORT + server.graphqlPath}`
+			`Server running in ${process.env.NODE_ENV} on ${
+				'http://localhost:' + process.env.PORT + server.graphqlPath
+			}`
 		)
 	);
 };

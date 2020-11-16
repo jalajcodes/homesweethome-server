@@ -41,9 +41,9 @@
 	},
 	"scripts": {
 		"watch": "tsc -w",
-		"dev": "nodemon build/index.js",
+		"dev": "nodemon -r dotenv/config build/index.js",
 		"dev2": "nodemon -r dotenv/config src/index.ts",
-		"start": "node build/index.js",
+		"start": "node -r dotenv/config build/index.js",
 		"build": "tsc -p ./",
 		"seed": "ts-node src/temp/seeder.ts",
 		"clear": "ts-node src/temp/clear.ts"
